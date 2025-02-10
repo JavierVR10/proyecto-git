@@ -1,2 +1,3 @@
 langchain_ollama
 langchain-community
+langgraph
