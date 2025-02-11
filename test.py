@@ -13,7 +13,7 @@ from sqlalchemy import create_engine
 import os
 
 # Configurar credenciales de BigQuery
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"D:\\Credenciales\\bd-walmart-8c7221ec9a72.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"D://Credenciales//bd-walmart-8c7221ec9a72.json"
 
 # Configuración del modelo y la base de datos
 llm = ChatOllama(model='llama3.2:3b', base_url='http://localhost:11434')
