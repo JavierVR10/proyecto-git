@@ -17,7 +17,7 @@ if "GOOGLE_CREDENTIALS" in st.secrets:
 else:
     # Si corres en local, usa el archivo JSON
     credentials = service_account.Credentials.from_service_account_file(
-        r"D:\Credenciales\bd-walmart-8c7221ec9a72.json"
+        r"D:\Credenciales\secure-brook-399117-2f8aec9dc4ed.json"
     )
 
 # 🚀 Conectar a BigQuery con las credenciales
@@ -39,7 +39,7 @@ def get_semantic_info():
         client = bigquery.Client()
         query = f"""
             SELECT * 
-            FROM `{project_id}.{dataset_id}.procesadores` 
+            FROM `{project_id}.{dataset_id}.PROCESADORES` 
             LIMIT 5
         """
         result = client.query(query).to_dataframe()
