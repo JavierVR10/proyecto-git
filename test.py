@@ -19,8 +19,8 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "D:/Credenciales/bd-walmart-8c722
 llm = ChatOllama(model='llama3.2:3b', base_url='http://localhost:11434')
 
 # Conectar a BigQuery
-project_id = "tu-proyecto-id"
-dataset_id = "tu_dataset"
+project_id = "secure-brook-399117"
+dataset_id = "PROCESADORES"
 db_uri = f'bigquery://{project_id}/{dataset_id}'
 db = SQLDatabase.from_uri(db_uri)
 
