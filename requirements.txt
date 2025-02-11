@@ -1,6 +1,6 @@
 streamlit
 langchain
-langchain-core
+langchain-core==0.1.17
 langchain-community
 langgraph
 pymysql
