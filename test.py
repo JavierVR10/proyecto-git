@@ -9,7 +9,7 @@ from langchain_community.utilities import SQLDatabase
 from langchain_community.agent_toolkits import SQLDatabaseToolkit
 from langgraph.prebuilt import create_react_agent
 from google.cloud import bigquery
-from sqlalchemy import create_engine
+
 import os
 
 # Configurar credenciales de BigQuery
