@@ -1,5 +1,10 @@
-langchain_ollama
+streamlit
+langchain
+langchain-core
 langchain-community
 langgraph
 pymysql
+sqlalchemy
+google-cloud-bigquery
+
 
