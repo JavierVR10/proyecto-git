@@ -9,11 +9,11 @@ from langchain_community.utilities import SQLDatabase
 from langchain_community.agent_toolkits import SQLDatabaseToolkit
 from langgraph.prebuilt import create_react_agent
 from google.cloud import bigquery
-
+from sqlalchemy import create_engine
 import os
 
 # Configurar credenciales de BigQuery
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "D:/Credenciales/bd-walmart-8c7221ec9a72.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"D:\Credenciales\bd-walmart-8c7221ec9a72.json"
 
 # Configuración del modelo y la base de datos
 llm = ChatOllama(model='llama3.2:3b', base_url='http://localhost:11434')
@@ -22,6 +22,7 @@ llm = ChatOllama(model='llama3.2:3b', base_url='http://localhost:11434')
 project_id = "secure-brook-399117"
 dataset_id = "PROCESADORES"
 db_uri = f'bigquery://{project_id}/{dataset_id}'
+
 db = SQLDatabase.from_uri(db_uri)
 
 # Función para obtener datos de BigQuery
