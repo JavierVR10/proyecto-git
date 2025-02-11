@@ -5,6 +5,8 @@ langchain-community
 langgraph
 google-cloud-bigquery
 langchain-ollama
+pybigquery
+
 
 
 
