@@ -4,7 +4,7 @@ import streamlit as st
 st.set_page_config(page_title="Asistente de Base de Datos de Procesadores", layout="wide")
 
 from langchain_ollama import ChatOllama
-from langchain_core.prompts import SystemMessage, HumanMessage, AIMessage
+from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from langchain_community.utilities import SQLDatabase
 from langchain_community.agent_toolkits import SQLDatabaseToolkit
 from langgraph.prebuilt import create_react_agent
