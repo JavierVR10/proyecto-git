@@ -13,12 +13,16 @@ import os
 # 🚀 Cargar credenciales de BigQuery desde Streamlit Secrets
 if "GOOGLE_CREDENTIALS" in st.secrets:
     credentials_info = json.loads(st.secrets["GOOGLE_CREDENTIALS"])
+    # Asegúrate de que el campo 'universe_domain' esté presente
+    credentials_info["universe_domain"] = "googleapis.com"
     credentials = service_account.Credentials.from_service_account_info(credentials_info)
 else:
     # Si corres en local, usa el archivo JSON
     credentials = service_account.Credentials.from_service_account_file(
         r"D:\Credenciales\secure-brook-399117-2f8aec9dc4ed.json"
     )
+    # Asegúrate de que el campo 'universe_domain' esté presente
+    credentials = credentials.with_universe_domain("googleapis.com")
 
 # 🚀 Conectar a BigQuery con las credenciales
 project_id = "secure-brook-399117"
