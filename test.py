@@ -1,29 +1,36 @@
 import streamlit as st
-
-# Debe ser el primer comando de Streamlit en el script
-st.set_page_config(page_title="Asistente de Base de Datos de Procesadores", layout="wide")
-
 from langchain_ollama import ChatOllama
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from langchain_community.utilities import SQLDatabase
 from langchain_community.agent_toolkits import SQLDatabaseToolkit
 from langgraph.prebuilt import create_react_agent
 from google.cloud import bigquery
+from google.oauth2 import service_account
 from sqlalchemy import create_engine
+import json
 import os
 
-# Configurar credenciales de BigQuery
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"D://Credenciales//bd-walmart-8c7221ec9a72.json"
+# 🚀 Cargar credenciales de BigQuery desde Streamlit Secrets
+if "GOOGLE_CREDENTIALS" in st.secrets:
+    credentials_info = json.loads(st.secrets["GOOGLE_CREDENTIALS"])
+    credentials = service_account.Credentials.from_service_account_info(credentials_info)
+else:
+    # Si corres en local, usa el archivo JSON
+    credentials = service_account.Credentials.from_service_account_file(
+        r"D:\Credenciales\bd-walmart-8c7221ec9a72.json"
+    )
 
-# Configuración del modelo y la base de datos
-llm = ChatOllama(model='llama3.2:3b', base_url='http://localhost:11434')
-
-# Conectar a BigQuery
+# 🚀 Conectar a BigQuery con las credenciales
 project_id = "secure-brook-399117"
 dataset_id = "PROCESADORES"
-db_uri = f'bigquery://{project_id}/{dataset_id}'
+client = bigquery.Client(credentials=credentials, project=project_id)
 
+# 🚀 Conectar SQLAlchemy con BigQuery
+db_uri = f'bigquery://{project_id}/{dataset_id}'
 db = SQLDatabase.from_uri(db_uri)
+
+# Configuración del modelo
+llm = ChatOllama(model='llama3.2:3b', base_url='http://localhost:11434')
 
 # Función para obtener datos de BigQuery
 def get_semantic_info():
