@@ -4,40 +4,41 @@ import streamlit as st
 st.set_page_config(page_title="Asistente de Base de Datos de Procesadores", layout="wide")
 
 from langchain_ollama import ChatOllama
-from langchain_core.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
+from langchain_core.prompts import SystemMessage, HumanMessage, AIMessage
 from langchain_community.utilities import SQLDatabase
 from langchain_community.agent_toolkits import SQLDatabaseToolkit
-from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from langgraph.prebuilt import create_react_agent
+from google.cloud import bigquery
+from sqlalchemy import create_engine
+import os
 
-import pymysql
-from sqlalchemy import create_engine, text
+# Configurar credenciales de BigQuery
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "D:/Credenciales/bd-walmart-8c7221ec9a72.json"
 
 # Configuración del modelo y la base de datos
 llm = ChatOllama(model='llama3.2:3b', base_url='http://localhost:11434')
 
-db_uri = 'mysql+pymysql://root:javi3rJA@localhost:3306/procesadores'
+# Conectar a BigQuery
+project_id = "tu-proyecto-id"
+dataset_id = "tu_dataset"
+db_uri = f'bigquery://{project_id}/{dataset_id}'
 db = SQLDatabase.from_uri(db_uri)
 
-# Función para obtener datos de la capa semántica
+# Función para obtener datos de BigQuery
 def get_semantic_info():
-    """Consulta la capa semántica y devuelve datos de ejemplo."""
+    """Consulta la base de datos en BigQuery y devuelve datos de ejemplo."""
     try:
-        connection = pymysql.connect(
-            host='localhost',
-            user='root',
-            password='javi3rJA',
-            database='procesadores',
-            cursorclass=pymysql.cursors.DictCursor
-        )
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM procesadores LIMIT 5;")
-            result = cursor.fetchall()
-        connection.close()
-        return result
+        client = bigquery.Client()
+        query = f"""
+            SELECT * 
+            FROM `{project_id}.{dataset_id}.procesadores` 
+            LIMIT 5
+        """
+        result = client.query(query).to_dataframe()
+        return result.to_dict(orient='records')
     except Exception as e:
-        return f"Error al conectar con la base de datos: {e}"
-
+        return f"Error al conectar con BigQuery: {e}"
+    
 # Instrucciones para el agente
 SQL_PREFIX = """You are an assistant that helps users understand and query databases. 
 You can provide explanations about the database structure, help with SQL queries, and explain concepts in natural language.
@@ -120,3 +121,6 @@ st.write("## Historial de Preguntas 📜")
 for entry in st.session_state.history[::-1]:  # Mostramos de la más reciente a la más antigua
     with st.expander(f"Pregunta: {entry['question']}"):
         st.write(f"**Respuesta:** {entry['answer']}")
+
+
+
