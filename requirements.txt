@@ -3,8 +3,6 @@ langchain
 langchain-core
 langchain-community
 langgraph
-pymysql
-sqlalchemy
 google-cloud-bigquery
 langchain-ollama
 
