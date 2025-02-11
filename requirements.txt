@@ -6,5 +6,7 @@ langgraph
 pymysql
 sqlalchemy
 google-cloud-bigquery
+langchain-ollama
+
 
 
